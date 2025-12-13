@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 2 — Manipulation DOM</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    p { margin: 10px 0; font-size: 18px; }
+    form { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    input[type="text"] { padding: 6px; }
+    button { padding: 6px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>Exercice 2 : Manipulation des paragraphes</h2>
+
+  <p id="1">Je suis le paragraphe P1.</p>
+  <p id="2">Je suis le paragraphe P2.</p>
+  <p id="3">Je suis le paragraphe P3.</p>
+
+  <form>
+    <input type="text" id="colorInput" placeholder="Entrez une couleur (ex: red, blue, #ff0000)">
+    <button type="button" id="changeColorBtn">Changer couleur</button>
+
+    <button type="button" id="centerBtn">Centrer P2</button>
+
+    <button type="button" id="hideBtn">Masquer P3</button>
+    <button type="button" id="showBtn">Réafficher P3</button>
+  </form>
+
+  <script>
+    const p1 = document.getElementById("1");
+    const p2 = document.getElementById("2");
+    const p3 = document.getElementById("3");
+
+    document.getElementById("changeColorBtn").addEventListener("click", () => {
+      const color = document.getElementById("colorInput").value.trim();
+      p1.style.color = color || "red";  // défaut : rouge
+    });
+
+    document.getElementById("centerBtn").addEventListener("click", () => {
+      p2.style.textAlign = "center";
+    });
+
+    document.getElementById("hideBtn").addEventListener("click", () => {
+      p3.style.display = "none";
+    });
+
+    document.getElementById("showBtn").addEventListener("click", () => {
+      p3.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>

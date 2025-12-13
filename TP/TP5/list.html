@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercice 3</title>
+</head>
+<body>
+
+    <h2>Ajouter des éléments à une liste</h2>
+
+    <!-- Formulaire -->
+    <form id="myForm" onsubmit="return false;">
+        <input type="text" id="textInput" placeholder="Écris quelque chose ici">
+        <button id="addBtn">Ajouter à la liste</button>
+    </form>
+
+    <!-- Liste vide au départ -->
+    <ul id="myList"></ul>
+
+    <script>
+        // Récupérer les éléments
+        const input = document.getElementById("textInput");
+        const button = document.getElementById("addBtn");
+        const list = document.getElementById("myList");
+
+        // Fonction au clic
+        button.addEventListener("click", function() {
+
+            // Récupérer le texte
+            const valeur = input.value.trim();
+
+            // Vérifier si le champ n'est pas vide
+            if (valeur !== "") {
+                // Créer un nouvel élément li
+                const newItem = document.createElement("li");
+                newItem.textContent = valeur;
+
+                // Ajouter à la liste
+                list.appendChild(newItem);
+
+                // Effacer le champ
+                input.value = "";
+            }
+        });
+    </script>
+
+</body>
+</html>

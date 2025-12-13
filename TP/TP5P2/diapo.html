@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diaporama</title>
+</head>
+<body>
+
+    <h2>Diaporama simple</h2>
+
+    <!-- Image du diaporama -->
+    <img id="diapo" src="1.jpg" width="300">
+
+    <br><br>
+
+    <!-- Boutons -->
+    <button id="stopBtn">Arrêter</button>
+    <button id="startBtn">Reprendre</button>
+
+    <script>
+        // Tableau des images
+        const images = ["1.jpg", "2.jpg", "3.jpg"];
+
+        let index = 0; // index de l'image affichée
+        let intervalId; // id de l'intervalle
+
+        const diapo = document.getElementById("diapo");
+        const stopBtn = document.getElementById("stopBtn");
+        const startBtn = document.getElementById("startBtn");
+
+        // Fonction qui change l'image
+        function changerImage() {
+            index = (index + 1) % images.length; // 0→1→2→0→...
+            diapo.src = images[index];
+        }
+
+        // Lancer le diaporama automatiquement
+        function start() {
+            intervalId = setInterval(changerImage, 2000); // toutes les 2 secondes
+        }
+
+        // Arrêter le défilement
+        function stop() {
+            clearInterval(intervalId);
+        }
+
+        // Événements boutons
+        stopBtn.addEventListener("click", stop);
+        startBtn.addEventListener("click", start);
+
+        // Démarrage automatique au chargement
+        start();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Afficher un fichier texte</title>
+</head>
+<body>
+
+    <h2>Ouvrir un fichier texte dans une nouvelle fenêtre</h2>
+
+    <form>
+        <button type="button" onclick="ouvrirFichier()">Afficher bonjour.txt</button>
+    </form>
+
+    <script>
+        function ouvrirFichier() {
+            // Ouvrir une nouvelle fenêtre et charger bonjour.txt
+            window.open("bonjour.txt", "fenetreTexte", "width=400,height=300");
+        }
+    </script>
+
+</body>
+</html>

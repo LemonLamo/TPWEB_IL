@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Exercice 1 — Notes (JS)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 20px; max-width:900px; margin:auto }
+    table { border-collapse: collapse; width: 100%; margin-top: 12px }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center }
+    th { background: #f3f4f6 }
+   
+    input[type=text] { flex:1; padding:8px }
+    button { padding:8px 12px }
+   
+  </style>
+</head>
+<body>
+  <h1> Notes</h1>
+
+  <p>1) Tableau de 20 notes (0–20) affiché en tableau HTML. 2) Statistiques calculées automatiquement. 3) Option : saisir 20 notes séparées par un espace.</p>
+
+  <div class="controls">
+    <input id="notesInput" type="text" placeholder="Saisissez 20 notes séparées par un espace (ex: 12 15 9 18 ...)" />
+    <button id="loadBtn">Charger</button>
+    <button id="randomBtn">Générer aléatoire</button>
+  </div>
+  <div id="error" class="error" aria-live="polite"></div>
+
+  <div id="tableContainer"></div>
+
+  <div class="stats" id="statsContainer"></div>
+
+  <script>
+   
+
+    // Helpers
+    function isNumberInRange(n) {
+      return typeof n === 'number' && !Number.isNaN(n) && n >= 0 && n <= 20;
+    }
+
+    function renderTable(notes) {
+      const container = document.getElementById('tableContainer');
+      let html = '<table><thead><tr><th>#</th><th>Note</th></tr></thead><tbody>';
+      notes.forEach((note, i) => {
+        html += `<tr><td>${i + 1}</td><td>${note}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    function calculateStats(notes) {
+      const n = notes.length;
+      if (n === 0) return null;
+
+      const sum = notes.reduce((a, b) => a + b, 0);
+      const avg = +(sum / n).toFixed(2);
+      const max = Math.max(...notes);
+      const min = Math.min(...notes);
+      const countGE10 = notes.filter(x => x >= 10).length;
+      const countMax = notes.filter(x => x === max).length;
+
+      return { sum, avg, max, min, countGE10, countMax };
+    }
+
+    function renderStats(stats) {
+      const container = document.getElementById('statsContainer');
+      if (!stats) {
+        container.innerHTML = '';
+        return;
+      }
+      container.innerHTML = `
+        <div><strong>Moyenne :</strong> ${stats.avg}</div>
+        <div><strong>Meilleure note :</strong> ${stats.max}</div>
+        <div><strong>Plus mauvaise note :</strong> ${stats.min}</div>
+        <div><strong>Nombre de notes ≥ 10 :</strong> ${stats.countGE10}</div>
+        <div><strong>Nombre de notes égales à la meilleure note :</strong> ${stats.countMax}</div>
+      `;
+    }
+
+    function showError(msg) {
+      document.getElementById('error').textContent = msg || '';
+    }
+
+    function setNotes(notes) {
+      // Validate each note
+      if (!Array.isArray(notes) || notes.length !== 20) {
+        showError('Le tableau doit contenir exactement 20 notes.');
+        return;
+      }
+      for (const v of notes) {
+        if (!isNumberInRange(v)) {
+          showError('Chaque note doit être un nombre entre 0 et 20.');
+          return;
+        }
+      }
+      showError('');
+      renderTable(notes);
+      renderStats(calculateStats(notes));
+      // store for possible future use
+      window.currentNotes = notes.slice();
+    }
+
+    // Parse user input string -> array of 20 numbers
+    function parseInputNotes(str) {
+      if (!str) return null;
+      // split by whitespace (handles multiple spaces, tabs, newlines)
+      const parts = str.trim().split(/\s+/);
+      if (parts.length !== 20) return { error: 'Il faut exactement 20 valeurs (actuellement ' + parts.length + ').' };
+      const nums = parts.map(s => {
+        // allow comma decimal (e.g. '15,5') by replacing comma with dot
+        const normalized = s.replace(',', '.');
+        const n = Number(normalized);
+        return n;
+      });
+      for (let i = 0; i < nums.length; i++) {
+        if (Number.isNaN(nums[i]) || nums[i] < 0 || nums[i] > 20) {
+          return { error: `La valeur « ${parts[i]} » (position ${i + 1}) n'est pas un nombre valide entre 0 et 20.` };
+        }
+      }
+      // Round to 2 decimals for display
+      return { nums: nums.map(x => Math.round(x * 100) / 100) };
+    }
+
+    // Generate random 20 notes (integers or decimals)
+    function generateRandomNotes() {
+      const arr = Array.from({ length: 20 }, () => Math.round((Math.random() * 20) * 100) / 100);
+      return arr;
+    }
+
+    // Wiring
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const input = document.getElementById('notesInput').value;
+      const parsed = parseInputNotes(input);
+      if (parsed === null) {
+        showError('Veuillez saisir 20 notes séparées par des espaces.');
+        return;
+      }
+      if (parsed.error) {
+        showError(parsed.error);
+        return;
+      }
+      setNotes(parsed.nums);
+    });
+
+    document.getElementById('randomBtn').addEventListener('click', () => {
+      const randomNotes = generateRandomNotes();
+      // fill input field with generated notes
+      document.getElementById('notesInput').value = randomNotes.join(' ');
+      setNotes(randomNotes);
+    });
+
+    // Initialize with example
+    setNotes(initialNotes);
+  </script>
+</body>
+</html>
