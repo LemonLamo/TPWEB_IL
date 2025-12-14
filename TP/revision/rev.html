@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>revision</title>
+    <link rel="stylesheet" href="rev.css">
+
 </head>
 <body>
     
@@ -20,8 +22,49 @@
     <tr>
       <td>Lamia</td>
       <td>18</td>
- 
-</table>
+    </tr>
+    <tr>  
+      <td>Salma</td>
+      <td>12</td>
+
+    </tr>
+    </table>
+
+      <form action="post">
+        <label for="critere"> rechercher par:</label>
+        <select id="critere" >
+            <option value="name">Afficher tout</option>
+            <option value="grade">Titre</option>
+             <option value="name">auteur</option>
+            <option value="grade">categorie</option>
+        </select>
+
+        <br>
+       
+        <input type="text" id="searchInput" placeholder="Entrer le critere de recherche">
+        <button type="submit" id="boutonRechercher">Rechercher</button>
+         
+        <br>
+         <!-- radiobox-->
+        <input type="radio" id="asc" name="order" value="asc">
+        <label for="asc">Ascendant</label>
+        <input type="radio" id="desc" name="order" value="desc">
+        <label for="desc">Descendant</label>
+        <input type="radio" id="none" name="order" value="none" checked>
+        <label for="none">Aucun</label>
+       
+        <br>
+        <div id="resultat">
+            <!-- zone qui reçoit le resultat de la recherche-->
+        </div> 
+      </form>
+
+      <p id="demo"></p>
+
+      <button id="demobutton">Click me</button>
+
+      <img  id="demoImage" src="/TP/TP5P2/2.jpg" alt="Demo Image" width="200" height="150">
+    <script src="rev.js"></script>
 
 
 </body>
